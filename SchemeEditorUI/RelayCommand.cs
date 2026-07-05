@@ -13,7 +13,7 @@ namespace SchemeEditorUI
         private Predicate<object?> _canExecute;
         private Action<object> _execute;
 
-        public RelayCommand(Action<object> execute, Predicate<object?> canExecute) 
+        public RelayCommand(Action<object> execute, Predicate<object?> canExecute = null) 
         {
             _execute = execute;
             _canExecute = canExecute;

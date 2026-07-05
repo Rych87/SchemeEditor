@@ -1,20 +1,21 @@
 ﻿using SchemeModel;
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 
 namespace SchemeEditorUI.ViewModels
 {
-    class ShapeViewModel<TShape> : INotifyPropertyChanged, INotifyDataErrorInfo
+    class ShapeViewModel<TShape> : INotifyPropertyChanged
         where TShape : Shape
     {
         Scheme _scheme;
         TShape _shape;
-        
+        private readonly Dictionary<string, List<string>> _errors = new();
+
+        public Shape Shape { get { return _shape; } }
+
         public ShapeViewModel(TShape shape, Scheme scheme)
         {
             _shape = shape;
@@ -24,8 +25,15 @@ namespace SchemeEditorUI.ViewModels
         { 
             get => _shape.Name;
             set 
-            { 
-                _scheme.RenameShape(_shape, value);
+            {
+                try
+                {
+                    _scheme.RenameShape(_shape, value);
+                }
+                catch(Exception ex) 
+                {
+                    MessageBox.Show(ex.Message);
+                }
                 OnPropertyChanged();
             } 
         }
@@ -35,7 +43,14 @@ namespace SchemeEditorUI.ViewModels
             get => _shape.Position.X;
             set
             {
-                _shape.Position = new System.Drawing.Point(value, _shape.Position.Y);
+                try
+                {
+                    _shape.Position = new System.Drawing.Point(value, _shape.Position.Y);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }      
                 OnPropertyChanged();
             }
         }
@@ -45,7 +60,14 @@ namespace SchemeEditorUI.ViewModels
             get => _shape.Position.Y;
             set
             {
-                _shape.Position = new System.Drawing.Point(_shape.Position.X, value);
+                try
+                {
+                    _shape.Position = new System.Drawing.Point(_shape.Position.X, value);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
                 OnPropertyChanged();
             }
         }

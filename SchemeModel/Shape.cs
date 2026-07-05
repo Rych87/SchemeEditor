@@ -34,7 +34,7 @@ namespace SchemeModel
             get => _position;
             set
             {
-                if (_position.X < 0 || Position.Y < 0)
+                if (value.X < 0 || value.Y < 0)
                     throw new ArgumentException("отрицательная координата");
                 _position = value;
             }
@@ -46,5 +46,15 @@ namespace SchemeModel
     public class Square : Shape
     {
         public Square(string name) : base(name) { }
+    }
+
+    public class Circle : Shape
+    {
+        public Circle(string name) : base(name) { }
+    }
+
+    public class Diamond : Shape
+    {
+        public Diamond(string name) : base(name) { }
     }
 }

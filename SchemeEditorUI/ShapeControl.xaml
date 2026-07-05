@@ -4,12 +4,30 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SchemeEditorUI"
+             xmlns:model="clr-namespace:SchemeModel;assembly=SchemeModel"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type model:Square}">
+            <Rectangle Stroke="LightBlue"/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type model:Circle}">
+            <Ellipse Stroke="LightGreen"/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type model:Diamond}">
+            <Polyline Points="0,32 32,0 64,32 32,64 0,32"
+                      Stroke="BlueViolet"/>
+        </DataTemplate>
+    </UserControl.Resources>
+    
     <Grid Width="64" Height="64">
-        <Ellipse Stroke="Blue"></Ellipse>
+        <ContentControl Content="{Binding Shape}"/>
         <TextBlock HorizontalAlignment="Center"
                    VerticalAlignment="Center"
-                   Text="{Binding Name}"></TextBlock>
+                   Text="{Binding Name}" 
+                   TextTrimming="CharacterEllipsis"/>
     </Grid>
 </UserControl>
