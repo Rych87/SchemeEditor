@@ -13,6 +13,7 @@ namespace SchemeEditorUI.ViewModels
         IMessageBoxService _messageBoxService;
         Scheme _scheme;
         TShape _shape;
+        bool _isSelected;
 
         public Shape Shape { get { return _shape; } }
 
@@ -71,6 +72,26 @@ namespace SchemeEditorUI.ViewModels
                 }
                 OnPropertyChanged();
             }
+        }
+
+        public bool IsActive
+        {
+            get => _shape.IsActive;
+            set
+            {
+                _shape.IsActive = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsSelected 
+        { 
+            get => _isSelected;
+            set
+            {
+                _isSelected = value;
+                OnPropertyChanged();
+            } 
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

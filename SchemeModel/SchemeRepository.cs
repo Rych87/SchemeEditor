@@ -7,21 +7,7 @@ using System.Threading.Tasks;
 
 namespace SchemeModel
 {
-    public abstract class SchemeRepository
-    {
-        public Scheme CreateScheme(string schemeName) { return new Scheme(); }
-
-        protected Scheme CreateScheme(IEnumerable<Shape> items)
-        {
-            var ret = new Scheme();
-            foreach (var item in items)
-                ret.AddShape(item);
-            return ret;
-        }
-
-    }
-
-    public class SchemeRepositoryJson// : SchemeRepository 
+    public class SchemeRepositoryJson
     {
         public void SaveScheme(Scheme scheme, string filePath) 
         {
@@ -37,8 +23,7 @@ namespace SchemeModel
             {
                 Scheme ret = new Scheme();
                 var shapes = JsonSerializer.Deserialize<IEnumerable<Shape>>(openStream);
-                foreach(var shape in shapes)
-                    ret.AddShape(shape);
+                ret.RestoreScheme(shapes);
                 return ret;
             }
         }

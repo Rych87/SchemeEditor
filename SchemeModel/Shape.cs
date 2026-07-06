@@ -23,6 +23,18 @@ namespace SchemeModel
             Name = name;
         }
 
+        [JsonConstructor]
+        protected Shape(int id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
+
+        public int Id
+        {
+            get; internal set;
+        }
+
         public string Name 
         { 
             get => _name;
@@ -45,21 +57,30 @@ namespace SchemeModel
             }
         }
 
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
     }
 
     public class Square : Shape
     {
         public Square(string name) : base(name) { }
+
+        [JsonConstructor]
+        protected Square(int id, string name) : base (id, name) { }
     }
 
     public class Circle : Shape
     {
         public Circle(string name) : base(name) { }
+
+        [JsonConstructor]
+        protected Circle(int id, string name) : base(id, name) { }
     }
 
     public class Diamond : Shape
     {
         public Diamond(string name) : base(name) { }
+
+        [JsonConstructor]
+        protected Diamond(int id, string name) : base(id, name) { }
     }
 }

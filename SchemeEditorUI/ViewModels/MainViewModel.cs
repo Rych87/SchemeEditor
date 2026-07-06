@@ -17,7 +17,31 @@ namespace SchemeEditorUI.ViewModels
         private Scheme _scheme;
         private bool _isModified;
 
-        private string? CurrentFilePath { get; set; } = null;
+        private string _currentFilePath = null;
+
+        public string? CurrentFilePath 
+        { 
+            get => _currentFilePath;
+            set 
+            {
+                _currentFilePath = value;
+                OnPropertyChanged();
+            } 
+        }
+
+        ShapeViewModel<Shape> _selectedViewItem;
+        public ShapeViewModel<Shape> SelectedItem 
+        { 
+            get => _selectedViewItem;
+            set
+            {
+                _selectedViewItem = value;
+                foreach (var item in DataSource)
+                    item.IsSelected = item == _selectedViewItem;
+                OnPropertyChanged();
+            } 
+        }
+
         private bool IsModified 
         { 
             get => (Scheme?.Shapes.Any() ?? false) && _isModified; 
@@ -93,7 +117,10 @@ namespace SchemeEditorUI.ViewModels
             NewFileCommand = new RelayCommand((x) =>
             {
                 if (CheckModifiedAndContinue())
+                {
                     Scheme = new Scheme();
+                    CurrentFilePath = null;
+                }
             });
 
             ShowAddPanelCommand = new RelayCommand((x) => IsPanelVisible = true);
@@ -107,8 +134,8 @@ namespace SchemeEditorUI.ViewModels
                     {
                         try
                         {
+                            Scheme = _schemeRepositoryJson.LoadScheme(path);
                             CurrentFilePath = path;
-                            Scheme = _schemeRepositoryJson.LoadScheme(CurrentFilePath);
                             IsModified = false;
                         }
                         catch (Exception ex)
@@ -170,6 +197,7 @@ namespace SchemeEditorUI.ViewModels
 
         private void ItemViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
+            if (e.PropertyName == "IsSelected") return;
             IsModified = true;
         }
 

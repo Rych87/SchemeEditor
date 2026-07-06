@@ -7,19 +7,16 @@
     xmlns:local="clr-namespace:SchemeEditorUI"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:SchemeModel;assembly=SchemeModel"
-    Title="MainWindow"
+    Title="{Binding CurrentFilePath}"
     Width="800"
     Height="450"
     mc:Ignorable="d">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_Файл">
-                <MenuItem Header="_Создать"
-                    Command="{Binding NewFileCommand}" />
-                <MenuItem Header="_Открыть"
-                    Command="{Binding OpenFileCommand}" />
-                <MenuItem Header="_Сохранить"
-                    Command="{Binding SaveFileCommand}" />
+                <MenuItem Command="{Binding NewFileCommand}" Header="_Создать" />
+                <MenuItem Command="{Binding OpenFileCommand}" Header="_Открыть" />
+                <MenuItem Command="{Binding SaveFileCommand}" Header="_Сохранить" />
             </MenuItem>
         </Menu>
 
@@ -30,9 +27,10 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <ListView
-                Grid.Row="0"
-                d:ItemsSource="{d:SampleData ItemCount=2}"
-                ItemsSource="{Binding DataSource}">
+                    Grid.Row="0"
+                    d:ItemsSource="{d:SampleData ItemCount=2}"
+                    ItemsSource="{Binding DataSource}"
+                    SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -47,42 +45,44 @@
                                         <TextBox Text="{Binding PositionY}" />
                                     </StackPanel>
                                 </StackPanel>
-                                <Button Content="Удалить"
-                                        Command="{Binding DataContext.RemoveShapeCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                        CommandParameter="{Binding}"/>
+                                <CheckBox IsChecked="{Binding IsActive}"/>
+                                <Button
+                                    Command="{Binding DataContext.RemoveShapeCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="{Binding}"
+                                    Content="Удалить" />
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
                 <Button
-                x:Name="AddBtn"
-                Grid.Row="1"
-                Command="{Binding ShowAddPanelCommand}"
-                Content="Добавить"/>
+                    x:Name="AddBtn"
+                    Grid.Row="1"
+                    Command="{Binding ShowAddPanelCommand}"
+                    Content="Добавить" />
 
                 <Popup
-                x:Name="AddPanel"
-                IsOpen="{Binding IsPanelVisible}"
-                Placement="Top"
-                PlacementTarget="{Binding ElementName=AddBtn}"
-                StaysOpen="False">
+                    x:Name="AddPanel"
+                    IsOpen="{Binding IsPanelVisible}"
+                    Placement="Top"
+                    PlacementTarget="{Binding ElementName=AddBtn}"
+                    StaysOpen="False">
                     <Border
-                    Background="White"
-                    BorderBrush="Gray"
-                    BorderThickness="1">
+                        Background="White"
+                        BorderBrush="Gray"
+                        BorderThickness="1">
                         <StackPanel>
                             <Button
-                            Command="{Binding AddShapeCommand}"
-                            CommandParameter="{x:Type model:Circle}"
-                            Content="Круг" />
+                                Command="{Binding AddShapeCommand}"
+                                CommandParameter="{x:Type model:Circle}"
+                                Content="Круг" />
                             <Button
-                            Command="{Binding AddShapeCommand}"
-                            CommandParameter="{x:Type model:Square}"
-                            Content="Квадрат"/>
+                                Command="{Binding AddShapeCommand}"
+                                CommandParameter="{x:Type model:Square}"
+                                Content="Квадрат" />
                             <Button
-                            Command="{Binding AddShapeCommand}"
-                            CommandParameter="{x:Type model:Diamond}"
-                            Content="Ромб" />
+                                Command="{Binding AddShapeCommand}"
+                                CommandParameter="{x:Type model:Diamond}"
+                                Content="Ромб" />
                         </StackPanel>
                     </Border>
                 </Popup>

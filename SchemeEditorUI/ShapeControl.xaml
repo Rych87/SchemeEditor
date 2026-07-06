@@ -1,33 +1,49 @@
-﻿<UserControl x:Class="SchemeEditorUI.ShapeControl"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:SchemeEditorUI"
-             xmlns:model="clr-namespace:SchemeModel;assembly=SchemeModel"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+﻿<UserControl
+    x:Class="SchemeEditorUI.ShapeControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:SchemeEditorUI"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:SchemeModel;assembly=SchemeModel"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
 
     <UserControl.Resources>
+        <Style x:Key="InactiveStyle" TargetType="Shape">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding DataContext.IsActive, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="False">
+                    <Setter Property="Fill" Value="Gray" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding DataContext.IsSelected, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                    <Setter Property="StrokeThickness" Value="4"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        
         <DataTemplate DataType="{x:Type model:Square}">
-            <Rectangle Stroke="LightBlue"/>
+            <Rectangle Stroke="LightBlue"
+                       Style="{StaticResource InactiveStyle}"/>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type model:Circle}">
-            <Ellipse Stroke="LightGreen"/>
+            <Ellipse Stroke="LightGreen"
+                     Style="{StaticResource InactiveStyle}"/>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type model:Diamond}">
-            <Polyline Points="0,32 32,0 64,32 32,64 0,32"
-                      Stroke="BlueViolet"/>
+            <Polyline Points="0,32 32,0 64,32 32,64 0,32" Stroke="BlueViolet"
+                      Style="{StaticResource InactiveStyle}"/>
         </DataTemplate>
     </UserControl.Resources>
-    
+
     <Grid Width="64" Height="64">
-        <ContentControl Content="{Binding Shape}"/>
-        <TextBlock HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   Text="{Binding Name}" 
-                   TextTrimming="CharacterEllipsis"/>
+        <ContentControl Content="{Binding Shape}" />
+        <TextBlock
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Text="{Binding Name}"
+            TextTrimming="CharacterEllipsis" />
     </Grid>
 </UserControl>
