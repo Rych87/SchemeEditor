@@ -11,14 +11,25 @@
             _shapes.Add(shape);
         }
 
+        public void RemoveShape(Shape shape)
+        {
+            CheckContains(shape);
+            _shapes.Remove(shape);
+        }
+
         public void RenameShape(Shape shape, string name)
         {
-            if (!_shapes.Contains(shape))
-                throw new InvalidOperationException("блок не принадлежит проекту");
+            CheckContains(shape);
             if (string.Equals(shape.Name, name))
                 return;
             ValidateName(name);
             shape.Name = name;
+        }
+
+        private void CheckContains(Shape shape)
+        {
+            if (!_shapes.Contains(shape))
+                throw new InvalidOperationException("блок не принадлежит проекту");
         }
 
         private void ValidateName(string name, Shape shape = null)

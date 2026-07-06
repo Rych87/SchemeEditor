@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿using SchemeEditorUI.Services;
+using SchemeEditorUI.ViewModels;
+using SchemeModel;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -16,10 +19,17 @@ namespace SchemeEditorUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow(ViewModels.MainViewModel mainViewModel)
         {
             InitializeComponent();
-            DataContext = new SchemeEditorUI.ViewModels.MainViewModel(new SchemeModel.Scheme());
+            DataContext = mainViewModel;
+            Closing += MainWindow_Closing;
+        }
+
+        private void MainWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (DataContext is MainViewModel mainViewModel)
+                e.Cancel = !mainViewModel.CheckModifiedAndContinue();
         }
     }
 }

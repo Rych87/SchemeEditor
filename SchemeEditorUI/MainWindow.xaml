@@ -11,89 +11,104 @@
     Width="800"
     Height="450"
     mc:Ignorable="d">
-    <StackPanel Orientation="Horizontal">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <ListView
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_Файл">
+                <MenuItem Header="_Создать"
+                    Command="{Binding NewFileCommand}" />
+                <MenuItem Header="_Открыть"
+                    Command="{Binding OpenFileCommand}" />
+                <MenuItem Header="_Сохранить"
+                    Command="{Binding SaveFileCommand}" />
+            </MenuItem>
+        </Menu>
+
+        <StackPanel Orientation="Horizontal">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <ListView
                 Grid.Row="0"
                 d:ItemsSource="{d:SampleData ItemCount=2}"
                 ItemsSource="{Binding DataSource}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBox VerticalAlignment="Center" Text="{Binding Name}" />
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock>X</TextBlock>
-                                    <TextBox Text="{Binding PositionX}" />
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox VerticalAlignment="Center" Text="{Binding Name}" />
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock>X</TextBlock>
+                                        <TextBox Text="{Binding PositionX}" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock>Y</TextBlock>
+                                        <TextBox Text="{Binding PositionY}" />
+                                    </StackPanel>
                                 </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock>Y</TextBlock>
-                                    <TextBox Text="{Binding PositionY}" />
-                                </StackPanel>
+                                <Button Content="Удалить"
+                                        Command="{Binding DataContext.RemoveShapeCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                        CommandParameter="{Binding}"/>
                             </StackPanel>
-                            <Button>Remove</Button>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <Button
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <Button
                 x:Name="AddBtn"
                 Grid.Row="1"
                 Command="{Binding ShowAddPanelCommand}"
                 Content="Добавить"/>
 
-            <Popup
+                <Popup
                 x:Name="AddPanel"
-                IsOpen="{Binding IsPanelVisible, Mode=OneWay}"
+                IsOpen="{Binding IsPanelVisible}"
                 Placement="Top"
                 PlacementTarget="{Binding ElementName=AddBtn}"
                 StaysOpen="False">
-                <Border
+                    <Border
                     Background="White"
                     BorderBrush="Gray"
                     BorderThickness="1">
-                    <StackPanel>
-                        <Button
+                        <StackPanel>
+                            <Button
                             Command="{Binding AddShapeCommand}"
                             CommandParameter="{x:Type model:Circle}"
                             Content="Круг" />
-                        <Button
+                            <Button
                             Command="{Binding AddShapeCommand}"
                             CommandParameter="{x:Type model:Square}"
                             Content="Квадрат"/>
-                        <Button
+                            <Button
                             Command="{Binding AddShapeCommand}"
                             CommandParameter="{x:Type model:Diamond}"
                             Content="Ромб" />
-                    </StackPanel>
-                </Border>
-            </Popup>
-        </Grid>
+                        </StackPanel>
+                    </Border>
+                </Popup>
+            </Grid>
 
 
-        <ItemsControl ItemsSource="{Binding DataSource}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Canvas />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
+            <ItemsControl ItemsSource="{Binding DataSource}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
 
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <controls:ShapeControl />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <controls:ShapeControl />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
 
-            <ItemsControl.ItemContainerStyle>
-                <Style TargetType="ContentPresenter">
-                    <Setter Property="Canvas.Left" Value="{Binding PositionX}" />
-                    <Setter Property="Canvas.Top" Value="{Binding PositionY}" />
-                </Style>
-            </ItemsControl.ItemContainerStyle>
-        </ItemsControl>
-    </StackPanel>
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="ContentPresenter">
+                        <Setter Property="Canvas.Left" Value="{Binding PositionX}" />
+                        <Setter Property="Canvas.Top" Value="{Binding PositionY}" />
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+            </ItemsControl>
+        </StackPanel>
+    </DockPanel>
 </Window>

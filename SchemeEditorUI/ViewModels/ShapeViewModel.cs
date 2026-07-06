@@ -1,25 +1,26 @@
-﻿using SchemeModel;
+﻿using SchemeEditorUI.Services;
+using SchemeModel;
 using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows;
 
 namespace SchemeEditorUI.ViewModels
 {
-    class ShapeViewModel<TShape> : INotifyPropertyChanged
+    public class ShapeViewModel<TShape> : INotifyPropertyChanged
         where TShape : Shape
     {
+        IMessageBoxService _messageBoxService;
         Scheme _scheme;
         TShape _shape;
-        private readonly Dictionary<string, List<string>> _errors = new();
 
         public Shape Shape { get { return _shape; } }
 
-        public ShapeViewModel(TShape shape, Scheme scheme)
+        public ShapeViewModel(TShape shape, Scheme scheme, IMessageBoxService messageBoxService)
         {
             _shape = shape;
             _scheme = scheme;
+            _messageBoxService = messageBoxService;
         }
         public string Name 
         { 
@@ -32,7 +33,7 @@ namespace SchemeEditorUI.ViewModels
                 }
                 catch(Exception ex) 
                 {
-                    MessageBox.Show(ex.Message);
+                    _messageBoxService.ShowInfo(ex.Message);
                 }
                 OnPropertyChanged();
             } 
@@ -49,7 +50,7 @@ namespace SchemeEditorUI.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    _messageBoxService.ShowInfo(ex.Message);
                 }      
                 OnPropertyChanged();
             }
@@ -66,7 +67,7 @@ namespace SchemeEditorUI.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    _messageBoxService.ShowInfo(ex.Message);
                 }
                 OnPropertyChanged();
             }
