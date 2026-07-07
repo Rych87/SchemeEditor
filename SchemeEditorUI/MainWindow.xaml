@@ -45,7 +45,7 @@
                                         <TextBox Text="{Binding PositionY}" />
                                     </StackPanel>
                                 </StackPanel>
-                                <CheckBox IsChecked="{Binding IsActive}"/>
+                                <CheckBox IsChecked="{Binding IsActive}" />
                                 <Button
                                     Command="{Binding DataContext.RemoveShapeCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                     CommandParameter="{Binding}"
