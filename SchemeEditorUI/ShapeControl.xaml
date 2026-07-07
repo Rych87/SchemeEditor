@@ -12,9 +12,10 @@
 
     <UserControl.Resources>
         <Style x:Key="InactiveStyle" TargetType="Shape">
+            <Setter Property="StrokeThickness" Value="2"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding DataContext.IsActive, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="False">
-                    <Setter Property="Fill" Value="Gray" />
+                    <Setter Property="Opacity" Value="0.2" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding DataContext.IsSelected, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
                     <Setter Property="StrokeThickness" Value="4"/>

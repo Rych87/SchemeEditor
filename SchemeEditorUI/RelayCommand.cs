@@ -8,7 +8,7 @@ namespace SchemeEditorUI
         private Predicate<object?> _canExecute;
         private Action<object> _execute;
 
-        public RelayCommand(Action<object> execute, Predicate<object?> canExecute = null) 
+        public RelayCommand(Action<object> execute, Predicate<object> canExecute = null) 
         {
             _execute = execute;
             _canExecute = canExecute;
@@ -22,6 +22,11 @@ namespace SchemeEditorUI
         public void Execute(object? parameter)
         {
             _execute(parameter);
+        }
+
+        public void RaiseCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

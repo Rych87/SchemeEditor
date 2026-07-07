@@ -16,8 +16,15 @@ namespace SchemeEditorUI.ViewModels
         private bool _isPanelVisible;
         private Scheme _scheme;
         private bool _isModified;
-
         private string _currentFilePath = null;
+        private ShapeViewModel<Shape> _selectedViewItem;
+
+        public ICommand AddShapeCommand { get; }
+        public ICommand ShowAddPanelCommand { get; }
+        public ICommand NewFileCommand { get; }
+        public ICommand OpenFileCommand { get; }
+        public ICommand SaveFileCommand { get; }
+        public ICommand RemoveShapeCommand { get; }
 
         public string? CurrentFilePath 
         { 
@@ -29,7 +36,6 @@ namespace SchemeEditorUI.ViewModels
             } 
         }
 
-        ShapeViewModel<Shape> _selectedViewItem;
         public ShapeViewModel<Shape> SelectedItem 
         { 
             get => _selectedViewItem;
@@ -44,8 +50,12 @@ namespace SchemeEditorUI.ViewModels
 
         private bool IsModified 
         { 
-            get => (Scheme?.Shapes.Any() ?? false) && _isModified; 
-            set => _isModified = value; 
+            get => (Scheme?.Shapes.Any() ?? false) && _isModified;
+            set
+            {
+                _isModified = value;
+                ((RelayCommand)SaveFileCommand).RaiseCanExecuteChanged();
+            }
         }
 
         private Scheme Scheme
@@ -65,13 +75,6 @@ namespace SchemeEditorUI.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public ICommand AddShapeCommand { get; }
-        public ICommand ShowAddPanelCommand { get; }
-        public ICommand NewFileCommand { get; }
-        public ICommand OpenFileCommand {  get; }
-        public ICommand SaveFileCommand { get; }
-        public ICommand RemoveShapeCommand { get; }
 
         public ObservableCollection<ShapeViewModel<Shape>> DataSource
         {
@@ -158,7 +161,7 @@ namespace SchemeEditorUI.ViewModels
                 }
                 _schemeRepositoryJson.SaveScheme(Scheme, CurrentFilePath);
                 IsModified = false;
-            });
+            }, (x) => IsModified);
         }
 
         private string GetNewName()
